@@ -2,9 +2,12 @@
    "name": "bytechimp-backend",
    "version": "1.0.0",
    "description": "",
-   "main": "app.js",
+   "engines": {
+      "node": "17.0.1"
+   },
+   "main": "server.js",
    "scripts": {
-      "start": "nodemon server.js"
+      "start": "node server.js"
    },
    "author": "",
    "license": "ISC",
