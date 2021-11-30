@@ -13,7 +13,7 @@ const createCategory = catchAsync(async (req, res, next) => {
 });
 
 const deleteCategory = catchAsync(async (req, res, next) => {
-   await Category.findByIdAndDelete({ id_: req.body.id });
+   await Category.findByIdAndDelete({ _id: req.body.id });
    res.status(200).json({ status: 'success', message: 'Category deleted successfully' });
 });
 
