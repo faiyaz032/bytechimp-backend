@@ -7,6 +7,7 @@ const path = require('path');
 const { notFoundHandler, defaultErrorHandler } = require('./middlewares/errorHandlers');
 const categoryRouter = require('./routers/categoryRouter');
 const userRouter = require('./routers/userRouter');
+const blogRouter = require('./routers/blogRouter');
 
 //initialise express app
 const app = express();
@@ -29,7 +30,7 @@ app.get('/', (req, res, next) => {
 //routers
 app.use('/api/user', userRouter);
 app.use('/api/category', categoryRouter);
-//app.use('/api/blog', blogRouter);
+app.use('/api/blog', blogRouter);
 
 //Error handlers
 app.all('*', notFoundHandler);

@@ -12,5 +12,10 @@ const createCategory = catchAsync(async (req, res, next) => {
    res.status(200).json({ status: 'success', message: 'Category created successfully' });
 });
 
+const deleteCategory = catchAsync(async (req, res, next) => {
+   await Category.findByIdAndDelete({ id_: req.body.id });
+   res.status(200).json({ status: 'success', message: 'Category deleted successfully' });
+});
+
 //export the functions
-module.exports = { getCategories, createCategory };
+module.exports = { getCategories, createCategory, deleteCategory };

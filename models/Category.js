@@ -5,6 +5,7 @@ const slugify = require('slugify').default;
 const categorySchema = mongoose.Schema({
    name: { type: String, required: [true, 'Category must be required'] },
    slug: String,
+   blogs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'blog' }],
 });
 
 categorySchema.pre('save', function (next) {
