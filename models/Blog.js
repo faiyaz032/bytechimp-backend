@@ -9,7 +9,7 @@ const blogSchema = mongoose.Schema(
       category: { type: String, required: [true, 'category is required'] },
       slug: String,
       image: { type: String, required: [true, 'image is required'] },
-      imageAccessLink: { type: String, required: [true, 'image access link is required'] },
+      imageAccessLink: String,
       description: { type: String, required: [true, 'description is required'] },
    },
    { timestamps: true }

@@ -6,7 +6,7 @@ const Category = require('../models/Category');
 const catchAsync = require('../utils/catchAsync');
 
 const createBlog = catchAsync(async (req, res, next) => {
-   const imageAccessLink = `https://bytechimp-api.herokuapp.com/uploads/${req.file.filename}`;
+   const imageAccessLink = `${process.env.APP_URL}/uploads/${req.file.filename}`;
    const image = req.file.filename;
    const blog = await Blog.create({ ...req.body, image: image, imageAccessLink: imageAccessLink });
 
