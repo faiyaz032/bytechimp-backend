@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //set static folder
-app.use(express.static(path.join(__dirname, 'public/')));
+app.use(express.static('public'));
 
 //root route of the app
 app.get('/', (req, res, next) => {
