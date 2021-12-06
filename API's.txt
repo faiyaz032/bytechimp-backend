@@ -6,5 +6,8 @@ Get blogs by category = GET https://bytechimp-api.herokuapp.com/api/blog/categor
 
 Category
 Create new category = POST https://bytechimp-api.herokuapp.com/api/category
-Get Categories = POST https://bytechimp-api.herokuapp.com/api/category
+Get Categories = GET https://bytechimp-api.herokuapp.com/api/category
 Delete Category = DELETE https://bytechimp-api.herokuapp.com/api/category
+
+Login = POST https://bytechimp-api.herokuapp.com/api/user/login
+
