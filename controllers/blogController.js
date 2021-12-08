@@ -21,8 +21,12 @@ const createBlog = catchAsync(async (req, res, next) => {
 });
 
 const getAllBlogs = catchAsync(async (req, res, next) => {
-   const blogs = await Blog.find({}).select({ __v: 0 });
-   res.status(200).json({ status: 'success', message: 'All Blogs fetched sucessfully', blogs });
+   const page = req.query.page * 1 || 1;
+   const limit = req.query.limit * 1 || 100;
+   const skip = (page - 1) * limit;
+
+   const blogs = await Blog.find({}).select({ __v: 0 }).skip(skip).limit(limit);
+   res.status(200).json({ status: 'success', message: 'All Blogs fetched sucessfully', results: blogs.length, blogs });
 });
 
 const getBlog = catchAsync(async (req, res, next) => {
@@ -32,7 +36,12 @@ const getBlog = catchAsync(async (req, res, next) => {
 
 const getBlogsByCategory = catchAsync(async (req, res, next) => {
    const { blogs } = await Category.findOne({ slug: req.params.category }).populate('blogs');
-   res.status(200).json({ status: 'success', message: `Blogs of a catogory fetched sucessfully`, blogs });
+   res.status(200).json({
+      status: 'success',
+      message: `Blogs of a catogory fetched sucessfully`,
+
+      blogs,
+   });
 });
 
 const deleteBlog = catchAsync(async (req, res, next) => {
