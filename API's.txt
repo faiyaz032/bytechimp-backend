@@ -1,5 +1,8 @@
 BLOGS
 Create new blog = POST https://bytechimp-api.herokuapp.com/api/blog
+
+//pagination included
+Get All Blogs With Pagination = GET https://bytechimp-api.herokuapp.com/api/blog?page={PAGE}&limit={LIMIT}
 Get All Blogs = GET https://bytechimp-api.herokuapp.com/api/blog
 Get a blog = GET https://bytechimp-api.herokuapp.com/api/blog/${SLUG}
 Get blogs by category = GET https://bytechimp-api.herokuapp.com/api/blog/category/${CATEGORY-SLUG}
