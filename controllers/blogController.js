@@ -57,7 +57,9 @@ const deleteBlog = catchAsync(async (req, res, next) => {
       }
    });
 
-   await cloudinary.uploader.destroy(deletedBlog.imageId, { type: 'upload', resource_type: 'image' });
+   if (deletedBlog.imageId) {
+      await cloudinary.uploader.destroy(deletedBlog.imageId, { type: 'upload', resource_type: 'image' });
+   }
    //delete the blog from the corresponding category
    await Category.findOneAndUpdate(
       { name: deletedBlog.category },
