@@ -8,9 +8,9 @@ const cloudinary = require('./../utils/cloudinary');
 
 const createBlog = catchAsync(async (req, res, next) => {
    const imageName = req.file.filename;
-   const { public_id, url } = await cloudinary.uploader.upload(req.file.path);
+   const { public_id, secure_url } = await cloudinary.uploader.upload(req.file.path);
 
-   const blog = await Blog.create({ ...req.body, image: imageName, imageAccessLink: url, imageId: public_id });
+   const blog = await Blog.create({ ...req.body, image: imageName, imageAccessLink: secure_url, imageId: public_id });
 
    await Category.findOneAndUpdate(
       { name: blog.category },
