@@ -5,6 +5,7 @@ const Blog = require('../models/Blog');
 const Category = require('../models/Category');
 const catchAsync = require('../utils/catchAsync');
 const cloudinary = require('./../utils/cloudinary');
+const { default: slugify } = require('slugify');
 
 const createBlog = catchAsync(async (req, res, next) => {
    const imageName = req.file.filename;
@@ -27,7 +28,7 @@ const getAllBlogs = catchAsync(async (req, res, next) => {
    const limit = req.query.limit * 1 || 100;
    const skip = (page - 1) * limit;
 
-   const blogs = await Blog.find({}).select({ __v: 0 }).skip(skip).limit(limit);
+   const blogs = await Blog.find({}).select({ __v: 0 });
    res.status(200).json({ status: 'success', message: 'All Blogs fetched sucessfully', results: blogs.length, blogs });
 });
 
@@ -44,6 +45,38 @@ const getBlogsByCategory = catchAsync(async (req, res, next) => {
 
       blogs,
    });
+});
+
+const updateBlog = catchAsync(async (req, res, next) => {
+   let blog;
+
+   if (req.file !== undefined) {
+      //delete the previous image
+      const currentBlog = await Blog.findOne({ slug: req.params.slug });
+      if (currentBlog.imageId) {
+         await cloudinary.uploader.destroy(currentBlog.imageId, { type: 'upload', resource_type: 'image' });
+      }
+
+      const imageName = req.file.filename;
+      const { public_id, secure_url } = await cloudinary.uploader.upload(req.file.path);
+      blog = await Blog.findOneAndUpdate(
+         { slug: req.params.slug },
+
+         { ...req.body, image: imageName, imageAccessLink: secure_url, imageId: public_id },
+         { new: true, runValidators: true }
+      );
+   }
+
+   blog = await Blog.findOneAndUpdate({ slug: req.params.slug }, req.body, { new: true, runValidators: true });
+   if (req.body.title) {
+      const slug = slugify(req.body.title, { lower: true });
+      blog = await Blog.findOneAndUpdate(
+         { slug: req.params.slug },
+         { $set: { slug: slug } },
+         { new: true, runValidators: true }
+      );
+   }
+   res.status(200).json({ status: 'success', data: { blog } });
 });
 
 const deleteBlog = catchAsync(async (req, res, next) => {
@@ -70,4 +103,4 @@ const deleteBlog = catchAsync(async (req, res, next) => {
    res.status(200).json({ status: 'success', message: 'Blog deleted sucessfully' });
 });
 
-module.exports = { createBlog, getAllBlogs, getBlog, getBlogsByCategory, deleteBlog };
+module.exports = { createBlog, getAllBlogs, getBlog, getBlogsByCategory, updateBlog, deleteBlog };

@@ -1,6 +1,16 @@
 //dependencies
 const express = require('express');
-const { createBlog, getAllBlogs, getBlog, deleteBlog, getBlogsByCategory } = require('../controllers/blogController');
+const multer = require('multer');
+
+const upload = multer();
+const {
+   createBlog,
+   getAllBlogs,
+   getBlog,
+   deleteBlog,
+   getBlogsByCategory,
+   updateBlog,
+} = require('../controllers/blogController');
 const processMulterImage = require('../utils/processMulterImage');
 
 //initialise the router
@@ -9,6 +19,7 @@ const router = express.Router();
 //routes here
 router.post('/', processMulterImage, createBlog);
 router.get('/', getAllBlogs);
+router.put('/:slug', processMulterImage, updateBlog);
 router.get('/:slug', getBlog);
 router.get('/category/:category', getBlogsByCategory);
 router.delete('/', deleteBlog);
