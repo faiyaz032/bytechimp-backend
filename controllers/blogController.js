@@ -28,7 +28,7 @@ const getAllBlogs = catchAsync(async (req, res, next) => {
    const limit = req.query.limit * 1 || 100;
    const skip = (page - 1) * limit;
 
-   const blogs = await Blog.find({}).select({ __v: 0 });
+   const blogs = await Blog.find({}).select('title slug imageAccessLink').skip(skip).limit(limit);
    res.status(200).json({ status: 'success', message: 'All Blogs fetched sucessfully', results: blogs.length, blogs });
 });
 
