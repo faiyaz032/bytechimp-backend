@@ -76,7 +76,7 @@ const updateBlog = catchAsync(async (req, res, next) => {
          { new: true, runValidators: true }
       );
    }
-   res.status(200).json({ status: 'success', data: { blog } });
+   res.status(200).json({ status: 'success', message: 'Blog updated successfully', data: { blog } });
 });
 
 const deleteBlog = catchAsync(async (req, res, next) => {
