@@ -38,11 +38,22 @@ const getBlog = catchAsync(async (req, res, next) => {
 });
 
 const getBlogsByCategory = catchAsync(async (req, res, next) => {
-   const { blogs } = await Category.findOne({ slug: req.params.category }).populate('blogs');
+   const page = req.query.page * 1 || 1;
+   const limit = req.query.limit * 1 || 100;
+   const skip = (page - 1) * limit;
+   const { blogs } = await Category.findOne({ slug: req.params.category }).populate({
+      path: 'blogs',
+      select: 'title slug imageAccessLink category createdAt',
+      options: {
+         limit: limit,
+         skip: skip,
+      },
+   });
+
    res.status(200).json({
       status: 'success',
-      message: `Blogs of a catogory fetched sucessfully`,
-
+      message: `Blogs of a ${req.params.category} catogory fetched sucessfully`,
+      results: blogs.length,
       blogs,
    });
 });
