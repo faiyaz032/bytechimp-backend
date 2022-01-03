@@ -78,6 +78,25 @@ const updateBlog = catchAsync(async (req, res, next) => {
       );
    }
 
+   if (req.body.category) {
+      const correspondingBlog = await Blog.findOne({ slug: req.params.slug });
+
+      await Category.findOneAndUpdate(
+         { name: correspondingBlog.category },
+
+         {
+            $pull: { blogs: correspondingBlog._id },
+         }
+      );
+      await Category.findOneAndUpdate(
+         { name: req.body.category },
+
+         {
+            $push: { blogs: correspondingBlog._id },
+         }
+      );
+   }
+
    blog = await Blog.findOneAndUpdate({ slug: req.params.slug }, req.body, { new: true, runValidators: true });
    if (req.body.title) {
       const slug = slugify(req.body.title, { lower: true });
