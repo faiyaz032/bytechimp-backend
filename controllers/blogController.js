@@ -35,6 +35,15 @@ const getAllBlogs = catchAsync(async (req, res, next) => {
    res.status(200).json({ status: 'success', message: 'All Blogs fetched sucessfully', results: blogs.length, blogs });
 });
 
+const getAllBlogsAdmin = catchAsync(async (req, res, next) => {
+   const page = req.query.page * 1 || 1;
+   const limit = req.query.limit * 1 || 100;
+   const skip = (page - 1) * limit;
+
+   const blogs = await Blog.find({}).select('title slug imageAccessLink category createdAt').skip(skip).limit(limit);
+   res.status(200).json({ status: 'success', message: 'All Blogs fetched sucessfully', results: blogs.length, blogs });
+});
+
 const getBlog = catchAsync(async (req, res, next) => {
    const blog = await Blog.findOne({ slug: req.params.slug }).select({ __v: 0 });
    res.status(200).json({ status: 'success', message: 'Blog fetched sucessfully', blog });
@@ -136,4 +145,4 @@ const deleteBlog = catchAsync(async (req, res, next) => {
    res.status(200).json({ status: 'success', message: 'Blog deleted sucessfully' });
 });
 
-module.exports = { createBlog, getAllBlogs, getBlog, getBlogsByCategory, updateBlog, deleteBlog };
+module.exports = { createBlog, getAllBlogs, getBlog, getBlogsByCategory, updateBlog, deleteBlog, getAllBlogsAdmin };

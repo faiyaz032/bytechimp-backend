@@ -10,6 +10,7 @@ const {
    deleteBlog,
    getBlogsByCategory,
    updateBlog,
+   getAllBlogsAdmin,
 } = require('../controllers/blogController');
 const processMulterImage = require('../utils/processMulterImage');
 
@@ -19,6 +20,7 @@ const router = express.Router();
 //routes here
 router.post('/', processMulterImage, createBlog);
 router.get('/', getAllBlogs);
+router.get('/admin', getAllBlogsAdmin);
 router.put('/:slug', processMulterImage, updateBlog);
 router.get('/:slug', getBlog);
 router.get('/category/:category', getBlogsByCategory);
